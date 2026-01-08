@@ -1,0 +1,27 @@
+{
+  "name": "todo-web-app-quo_test_solution",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm start\" \"cd frontend && npm run dev\"",
+    "backend": "cd backend && npm start",
+    "frontend": "cd frontend && npm run dev",
+    "test": "concurrently \"cd backend && npm test\" \"cd frontend && npm test\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muneeb0346/TODO-Web-App-quo_test_solution.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/muneeb0346/TODO-Web-App-quo_test_solution/issues"
+  },
+  "homepage": "https://github.com/muneeb0346/TODO-Web-App-quo_test_solution#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
