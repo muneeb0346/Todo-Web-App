@@ -7,10 +7,13 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "commonjs",
+    "module": "NodeNext",
     "target": "ES2020",
     "lib": ["ES2020"],
     "types": ["node"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "NodeNext",
 
     // Other Outputs
     "sourceMap": true,
