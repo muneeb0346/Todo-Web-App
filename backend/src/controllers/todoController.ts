@@ -1,10 +1,18 @@
 import type { Request, Response } from 'express';
+import { randomUUID } from 'crypto';
 import type { Todo } from '../types/todo.js';
 
 let todos: Todo[] = [];
 
 export const getTodos = (req: Request, res: Response) => {
-    res.status(200).json(todos);
+    const sorted = todos.slice().sort((a, b) => {
+        const titleA = (a.title || '').toLowerCase();
+        const titleB = (b.title || '').toLowerCase();
+        if (titleA < titleB) return -1;
+        if (titleA > titleB) return 1;
+        return 0;
+    });
+    res.status(200).json(sorted);
 };
 
 export const addTodo = (req: Request, res: Response) => {
@@ -15,7 +23,7 @@ export const addTodo = (req: Request, res: Response) => {
     }
 
     const newTodo: Todo = {
-        id: Date.now().toString(),
+        id: randomUUID(),
         title,
         description,
         completed: false,
@@ -51,5 +59,5 @@ export const deleteTodo = (req: Request, res: Response) => {
         return res.status(404).json({ error: 'Todo not found' });
     }
 
-    res.status(200).send();
+    res.status(204).send();
 };
