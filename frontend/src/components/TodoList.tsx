@@ -12,7 +12,6 @@ export default function TodoList() {
     const [error, setError] = useState('');
     const [filter, setFilter] = useState<Filter>('all');
     const [toast, setToast] = useState<{ message: string; undo?: () => void } | null>(null);
-    const [undoTimer, setUndoTimer] = useState<number | null>(null);
     const titleInputRef = useRef<HTMLInputElement>(null);
     const [showForm, setShowForm] = useState(false);
 
@@ -87,27 +86,27 @@ export default function TodoList() {
 
         setTodos((prev) => prev.filter((t) => t.id !== id));
 
+        let timerId: number | null = null;
+
         const undo = () => {
             setTodos((prev) => [toDelete, ...prev]);
             setToast(null);
-            if (undoTimer) {
-                clearTimeout(undoTimer);
-                setUndoTimer(null);
+            if (timerId !== null) {
+                clearTimeout(timerId);
+                timerId = null;
             }
         };
 
         setToast({ message: 'Todo deleted', undo });
-        const timer = window.setTimeout(() => {
-            setToast(null);
-        }, 4000);
-        setUndoTimer(timer);
 
-        try {
-            await deleteTodo(id);
-        } catch {
-            undo();
-            setError('Failed to delete todo');
-        }
+        timerId = window.setTimeout(async () => {
+            try {
+                await deleteTodo(id);
+            } catch {
+                setTodos((prev) => [toDelete, ...prev]);
+                setError('Failed to delete todo');
+            }
+        }, 5000);
     };
 
     return (
@@ -212,14 +211,16 @@ export default function TodoList() {
             {showForm && (
                 <div className="fixed inset-0 z-30 flex items-center justify-center bg-slate-900/50 px-4" role="dialog" aria-modal="true" aria-labelledby="add-todo-dialog">
                     <div className="relative w-full max-w-xl">
-                        <div className="absolute right-3 top-3">
+                        <div className="absolute right-0 top-0 translate-x-1/3 -translate-y-1/3">
                             <button
-                                className="rounded-full bg-white px-3 py-1 text-sm font-semibold text-slate-700 shadow hover:bg-slate-50"
+                                className="inline-flex items-center justify-center rounded-full bg-white w-8 h-8 text-slate-700 shadow hover:bg-slate-50 transition"
                                 onClick={() => setShowForm(false)}
                                 type="button"
                                 aria-label="Close dialog"
                             >
-                                Close
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
                             </button>
                         </div>
                         <TodoForm onAdd={handleAdd} titleRef={titleInputRef} />

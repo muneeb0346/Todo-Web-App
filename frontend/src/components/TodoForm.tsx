@@ -41,17 +41,16 @@ export default function TodoForm({ onAdd, titleRef }: TodoFormProps) {
                     aria-required="true"
                 />
                 <label htmlFor="todo-description" className="sr-only">Todo description (optional)</label>
-                <input
+                <textarea
                     id="todo-description"
-                    className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-base focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-200"
-                    type="text"
+                    className="w-full min-h-40 rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-base focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 resize-none align-top"
                     placeholder="Optional description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     aria-label="Todo description"
                 />
                 <button
-                    className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white shadow-lg shadow-blue-500/25 transition hover:bg-blue-700 active:translate-y-[1px]"
+                    className="inline-flex items-center justify-center rounded-lg sm:rounded-xl bg-blue-600 px-3 py-2 sm:px-4 sm:py-3 font-semibold text-white shadow-lg shadow-blue-500/25 transition hover:bg-blue-700 active:translate-y-[1px]"
                     type="submit"
                     disabled={submitting}
                     aria-disabled={submitting}
