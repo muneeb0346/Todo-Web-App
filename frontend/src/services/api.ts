@@ -1,6 +1,21 @@
 import type { Todo } from '../types/todo';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Get API URL, supporting both Vite and Jest environments
+function getApiUrl(): string {
+    // Check for VITE_API_URL in process.env (Jest/Node.js)
+    if (typeof process !== 'undefined' && process.env?.VITE_API_URL) {
+        return process.env.VITE_API_URL;
+    }
+    
+    // Check for VITE_API_URL in globalThis (Vite runtime via define)
+    if (typeof globalThis !== 'undefined' && (globalThis as any).VITE_API_URL) {
+        return (globalThis as any).VITE_API_URL;
+    }
+
+    return 'http://localhost:5000';
+}
+
+const API_URL = getApiUrl();
 
 export async function fetchTodos(): Promise<Todo[]> {
     const res = await fetch(`${API_URL}/api/todos`);

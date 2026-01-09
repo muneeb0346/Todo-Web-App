@@ -14,6 +14,7 @@ export default function TodoList() {
     const [toast, setToast] = useState<{ message: string; undo?: () => void } | null>(null);
     const titleInputRef = useRef<HTMLInputElement>(null);
     const [showForm, setShowForm] = useState(false);
+    const timerRef = useRef<number | null>(null);
 
     useEffect(() => {
         const load = async () => {
@@ -27,6 +28,14 @@ export default function TodoList() {
             }
         };
         load();
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            if (timerRef.current !== null) {
+                clearTimeout(timerRef.current);
+            }
+        };
     }, []);
 
     const filteredTodos = useMemo(() => {
@@ -86,27 +95,31 @@ export default function TodoList() {
 
         setTodos((prev) => prev.filter((t) => t.id !== id));
 
-        let timerId: number | null = null;
+        if (timerRef.current !== null) {
+            clearTimeout(timerRef.current);
+        }
 
         const undo = () => {
             setTodos((prev) => [toDelete, ...prev]);
             setToast(null);
-            if (timerId !== null) {
-                clearTimeout(timerId);
-                timerId = null;
+            if (timerRef.current !== null) {
+                clearTimeout(timerRef.current);
+                timerRef.current = null;
             }
         };
 
         setToast({ message: 'Todo deleted', undo });
 
-        timerId = window.setTimeout(async () => {
+        timerRef.current = window.setTimeout(async () => {
             try {
                 await deleteTodo(id);
             } catch {
                 setTodos((prev) => [toDelete, ...prev]);
                 setError('Failed to delete todo');
+            } finally {
+                setToast(null);
             }
-        }, 5000);
+        }, 4000);
     };
 
     return (
