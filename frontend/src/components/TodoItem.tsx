@@ -26,14 +26,14 @@ export default function TodoItem({ todo, onToggle, onDelete, onUpdate }: TodoIte
     };
 
     return (
-        <article className="rounded-2xl gap-4 flex flex-col gap-4 border border-slate-200 bg-white p-5 shadow-xl shadow-slate-900/5" aria-labelledby={`todo-title-${todo.id}`}>
-            <div className="flex items-start gap-3">
+        <article className="rounded-2xl gap-4 flex flex-col gap-4 min-w-0 border border-slate-200 bg-white p-5 shadow-xl shadow-slate-900/5" aria-labelledby={`todo-title-${todo.id}`}>
+            <div className="flex items-start overflow-clip gap-3">
                 <label htmlFor={`todo-checkbox-${todo.id}`} className="sr-only">
                     {todo.completed ? 'Mark as incomplete' : 'Mark as complete'}
                 </label>
                 <input
                     id={`todo-checkbox-${todo.id}`}
-                    className="mt-1 h-5 w-5 cursor-pointer accent-blue-600"
+                    className="mt-1 h-5 w-5 flex-none cursor-pointer accent-blue-600"
                     type="checkbox"
                     checked={todo.completed}
                     onChange={handleToggle}
