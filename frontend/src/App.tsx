@@ -1,11 +1,12 @@
-import './App.css'
+import './App.css';
+import TodoList from './components/TodoList';
 
 function App() {
-	return (
-		<>
-			<h1 className="text-3xl font-bold underline">Hello world!</h1>
-		</>
-	)
+  return (
+    <main className="min-h-screen bg-slate-50 text-slate-900">
+      <TodoList />
+    </main>
+  );
 }
 
-export default App
+export default App;
